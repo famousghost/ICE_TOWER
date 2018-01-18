@@ -14,11 +14,11 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
     private bool scoresAdded = false;
 
     [SerializeField]
-    private Scores scores;
+    private Score scores;
 
     void Start()
     {
-        scores = GameObject.Find("GUI").GetComponent<Scores>();
+        scores = GameObject.Find("GUI").GetComponent<Score>();
         playerBody = GameObject.Find("Player").GetComponent<Rigidbody>();
         platformCollider = GetComponent<BoxCollider>();
     }

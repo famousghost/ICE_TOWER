@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMove : MonoBehaviour {
+public class CameraMove : GameOver {
 
     [SerializeField]
     private Rigidbody playerBody;
+
+    [SerializeField]
+    private Canvas GUICanvas;
 
     [SerializeField]
     private Camera mainCamera;
@@ -38,11 +41,13 @@ public class CameraMove : MonoBehaviour {
     private float cameraSpeed = 2.5f;
 
     [SerializeField]
-    private float timerToUpSpeed = 10.0f;
+    private float timerToUpSpeed = 25.0f;
 
 	// Use this for initialization
 	void Start () {
+        ResumeGame();
         playerBody = GameObject.Find("Player").GetComponent<Rigidbody>();
+        GUICanvas = GameObject.Find("GUI").GetComponentInChildren<Canvas>();
         spawnEnvironment = GameObject.FindGameObjectWithTag("Environment").GetComponent<SpawnEnvironment>();
         spawnPlatforms = GameObject.FindGameObjectWithTag("Platforms").GetComponent<CreatePlatforms>();
 
@@ -52,6 +57,7 @@ public class CameraMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Move();
+        CheckGameOver();
     }
     
     private void Move()
@@ -69,7 +75,6 @@ public class CameraMove : MonoBehaviour {
                 timerStop = true;
             }
         }
-        Debug.Log(Screen.height);
         if (playerBody.transform.position.y <= mainCamera.transform.position.y + CAMERAPOSTOTOPSCREEN)
         {
             Vector3 camSpeed = Vector3.up * cameraSpeed * Time.deltaTime;
@@ -97,6 +102,15 @@ public class CameraMove : MonoBehaviour {
         {
             cameraPositionToSpawnEnvironment = (mainCamera.transform.localPosition.y + 10.0f);
             spawnEnvironment.SpawEnvi();
+        }
+    }
+
+    private void CheckGameOver()
+    {
+        if(playerBody.transform.localPosition.y < mainCamera.transform.localPosition.y - 14.0f)
+        {
+            OverGame();
+            GUICanvas.enabled = true;
         }
     }
 }

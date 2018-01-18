@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlatformsState
+{
+    Normal = 0,
+    Sand,
+    Ice
+};
+
 public class CreatePlatforms : MonoBehaviour {
 
     [SerializeField]
     private GameObject platform;
+
+    [SerializeField]
+    private PlatformsState platformsState;
 
     [SerializeField]
     private List<GameObject> platforms;
@@ -13,11 +23,15 @@ public class CreatePlatforms : MonoBehaviour {
     [SerializeField]
     private float platformHeight;
 
+
     [SerializeField]
     private float platformWidth;
 
     [SerializeField]
     private float platformPosition;
+
+    [SerializeField]
+    private int platformIter = 1;
 
     [SerializeField]
     private int height = 1;
@@ -41,8 +55,27 @@ public class CreatePlatforms : MonoBehaviour {
         spwanPlatform.transform.parent = transform;
         spwanPlatform.transform.position = new Vector3(platfromPosition, platformHeight, 6.0f);
         spwanPlatform.transform.localScale = new Vector3(platformWidth,1.0f,3.0f);
+        if(platformIter%20==0)
+        {
+            platformsState++;
+        }
 
-        if(platforms.Count < 16)
+        switch (platformsState)
+        {
+            case PlatformsState.Normal:
+                spwanPlatform.GetComponent<Renderer>().material.color = Color.grey;
+                break;
+            case PlatformsState.Ice:
+                spwanPlatform.GetComponent<Renderer>().material.color = Color.blue;
+                break;
+            case PlatformsState.Sand:
+                spwanPlatform.GetComponent<Renderer>().material.color = Color.yellow;
+                break;
+            default:
+                break;
+        }
+
+        if (platforms.Count < 16)
         {
             platforms.Add(spwanPlatform);
         }
@@ -52,6 +85,8 @@ public class CreatePlatforms : MonoBehaviour {
             platforms.Add(spwanPlatform);
         }
 
+
+        platformIter++;
         height++;
     }
 
