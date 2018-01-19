@@ -8,18 +8,24 @@ public class GameGUI : MonoBehaviour {
     private Score scores;
 
     [SerializeField]
+    private Jump jump;
+
+    [SerializeField]
     private GUIStyle labelStyle;
 
     void Start()
     {
         labelStyle.fontSize = 20;
+        jump = GameObject.Find("Player").GetComponent<Jump>();
         scores = GetComponent<Score>();
     }
 
     void OnGUI()
     {
-        
-        GUI.Label(new Rect(0, 0, 200, 100),"Score: " + scores.GetScore().ToString(), labelStyle);
+        if(jump.GetDoubleJumpIter() <= 1)
+            GUI.Label(new Rect(0, 0, 200, 100),"Score: " + scores.GetScore().ToString(), labelStyle);
+        else
+            GUI.Label(new Rect(0, 0, 200, 100), "Score: " + scores.GetScore().ToString() + " X" + jump.GetDoubleJumpIter(), labelStyle);
     }
 
     public void RestartGame()

@@ -8,20 +8,27 @@ public class Score : MonoBehaviour {
     private int score = 0;
 
     [SerializeField]
-    private int currentScore = 0;
+    private int currentPlatform = 0;
+
+    [SerializeField]
+    private int multiplyPoints = 1;
+
+    [SerializeField]
+    private int platformsCounter = 0;
 
     public void AddScore(int score)
     {
-        this.score += score;
-        if (currentScore < 20)
-            this.currentScore += score;
-        else
-            currentScore = 0;
+
     }
 
-    public void AddScoreDoubleJump(int score,int multi)
+    public void AddScore(int score,int multi)
     {
-        this.score += (score * multi);
+        this.score += (score*multi);
+        platformsCounter += 1;
+        if (currentPlatform < 2)
+            currentPlatform++;
+        else
+            currentPlatform = 0;
     }
 
     public int GetScore()
@@ -29,9 +36,19 @@ public class Score : MonoBehaviour {
         return score;
     }
 
-    public int GetCurrentScore()
+    public int GetCurrentPlatform()
     {
-        return currentScore;
+        return currentPlatform;
+    }
+
+    public void AddMultiplyPoints(int multiplyPoints)
+    {
+        this.multiplyPoints += multiplyPoints;
+    }
+
+    public void SetMultiplyPoints(int multiplyPoints)
+    {
+        this.multiplyPoints = multiplyPoints;
     }
 
 }

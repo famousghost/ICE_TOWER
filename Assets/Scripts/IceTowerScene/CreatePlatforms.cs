@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlatformsState
+public class CreatePlatforms : Spawn
 {
-    Normal = 0,
-    Sand,
-    Ice
-};
-
-public class CreatePlatforms : MonoBehaviour {
 
     [SerializeField]
     private GameObject platform;
@@ -42,12 +36,12 @@ public class CreatePlatforms : MonoBehaviour {
 
         for (int i = 0; i < 8; i++)
         {
-            SpwanPlatform();
+            SpawnObject();
         }
         
     }
 
-    private void AddPlatformToListAndSpawn(float platformWidth,float platfromPosition,float platformHeight)
+    private void AddToObjectList(float platformWidth,float platfromPosition,float platformHeight)
     {
 
 
@@ -92,14 +86,14 @@ public class CreatePlatforms : MonoBehaviour {
         height++;
     }
 
-    public void SpwanPlatform()
+    public void SpawnObject()
     {
 
          platformPosition = Random.Range(14.0f, -14.0f);
          platformWidth = Random.Range(5.0f, 10.0f);
          platformHeight = 4.0f * height;
 
-         AddPlatformToListAndSpawn(platformWidth, platformPosition, platformHeight);
+         AddToObjectList(platformWidth, platformPosition, platformHeight);
     }
 
     private void DestroyPlatform()

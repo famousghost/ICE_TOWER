@@ -17,6 +17,9 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
     private SpawnEnvironment spawnEnvironment;
 
     [SerializeField]
+    private Jump jump;
+
+    [SerializeField]
     private bool scoresAdded = false;
 
     [SerializeField]
@@ -24,6 +27,7 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
 
     void Start()
     {
+        jump = GameObject.Find("Player").GetComponent<Jump>();
         spawnEnvironment = GameObject.Find("Walls").GetComponent<SpawnEnvironment>();
         createPlatforms = GetComponentInParent<CreatePlatforms>();
         score = GameObject.Find("GUI").GetComponent<Score>();
@@ -42,11 +46,11 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
         {
             if (!scoresAdded)
             {
-                score.AddScore(10);
-                createPlatforms.SpwanPlatform();
-                if(score.GetCurrentScore() == 0)
+                score.AddScore(10, jump.GetDoubleJumpIter());
+                createPlatforms.SpawnObject();
+                if(score.GetCurrentPlatform() == 0)
                 {
-                    spawnEnvironment.SpawEnvi();
+                    spawnEnvironment.SpawnObject();
                 }
             }
             platformCollider.isTrigger = false;

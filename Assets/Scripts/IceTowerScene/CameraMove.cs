@@ -65,8 +65,7 @@ public class CameraMove : GameOver {
             if (cameraSpeed < 10.0f)
             {
                 spawnWallsTime -= 0.5f;
-                cameraSpeed += 2.5f;
-                
+                cameraSpeed += 2.5f;   
             }
             else
             {

@@ -14,8 +14,6 @@ public class PlayerControler : MonoBehaviour {
     private Jump jump;
 
 
-
-
     // Use this for initialization
     void Start () {
         playerBody = GetComponent<Rigidbody>();

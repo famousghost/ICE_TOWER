@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnEnvironment : MonoBehaviour {
+public class SpawnEnvironment : Spawn {
 
     [SerializeField]
     private GameObject leftWall;
@@ -32,13 +32,13 @@ public class SpawnEnvironment : MonoBehaviour {
 
         for (int i = 0; i < 18; i++)
         {
-            SpawnBackAndWalls(leftWall, wallsGap);
-            SpawnBackAndWalls(rightWall, wallsGap);
-            SpawnBackAndWalls(backGround, backGroundgap);
+            AddToObjectList(leftWall, wallsGap);
+            AddToObjectList(rightWall, wallsGap);
+            AddToObjectList(backGround, backGroundgap);
         }
     }
 
-    private void SpawnBackAndWalls(GameObject obj,float gap)
+    private void AddToObjectList(GameObject obj,float gap)
     {
          GameObject spwanObject = GameObject.Instantiate(obj);
          spwanObject.transform.parent = transform;
@@ -58,11 +58,11 @@ public class SpawnEnvironment : MonoBehaviour {
         }
     }
 
-    public void SpawEnvi()
+    public void SpawnObject()
     {
-        SpawnBackAndWalls(leftWall, wallsGap);
-        SpawnBackAndWalls(rightWall, wallsGap);
-        SpawnBackAndWalls(backGround, backGroundgap);
+        AddToObjectList(leftWall, wallsGap);
+        AddToObjectList(rightWall, wallsGap);
+        AddToObjectList(backGround, backGroundgap);
         wallsGap += 15.0f;
         backGroundgap += 15.0f;
     }

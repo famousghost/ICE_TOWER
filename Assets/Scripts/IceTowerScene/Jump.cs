@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Jump : WalkLeftAndRight
+public class Jump : KeyInput
 {
     [SerializeField]
-    private float playerJump = 1500.0f;
+    private float playerJump = 1000.0f;
 
     [SerializeField]
     private CreatePlatforms createPlatforms;
 
     [SerializeField]
+    private WalkLeftAndRight walkLeftAndRight;
+
+    [SerializeField]
     private Score score;
 
     [SerializeField]
-    private float currentScore = 0.0f;
-
-    [SerializeField]
-    private int doubleJumpIter = 0;
+    private int doubleJumpIter = 1;
 
     private const float RAYLENGHT = 2.0f;
 
     void Start()
     {
         score = GameObject.Find("GUI").GetComponent<Score>();
+        walkLeftAndRight = GetComponent<WalkLeftAndRight>();
         createPlatforms = GameObject.Find("Platforms").GetComponent<CreatePlatforms>();
     }
 
@@ -34,17 +35,27 @@ public class Jump : WalkLeftAndRight
 
     public void Jumping(ref Rigidbody playerBody)
     {
-        if(GetJumpValue() && IsOnGrounded(ref playerBody))
+        if(walkLeftAndRight.GetPlayerSpeed()<= 9.0f)
         {
-            if (playerSpeed >= 9.0f)
+            playerJump = 1000.0f;
+            doubleJumpIter = 1;
+            score.SetMultiplyPoints(1);
+        }
+
+        if (GetJumpValue() && IsOnGrounded(ref playerBody) && playerBody.velocity.y == 0)
+        {
+
+            if (walkLeftAndRight.GetPlayerSpeed() >= 9.0f)
             {
                 playerJump = 1500.0f;
                 doubleJumpIter++;
             }
-            else
-                playerJump = 1000.0f;
 
             playerBody.AddForce(Vector3.up * playerJump * Time.deltaTime,ForceMode.Impulse);
+        }
+        if(IsOnGrounded(ref playerBody))
+        {
+            walkLeftAndRight.SetPlayerSpeed();
         }
     }
 
@@ -64,5 +75,18 @@ public class Jump : WalkLeftAndRight
                 return false;
         }
         return false;
+    }
+
+    private void MultiplyPoints()
+    {
+        if(doubleJumpIter > 1)
+        {
+            score.AddMultiplyPoints(doubleJumpIter);
+        }
+    }
+
+    public int GetDoubleJumpIter()
+    {
+        return doubleJumpIter;
     }
 }
