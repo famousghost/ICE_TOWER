@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Jump : KeyInput
+public class Jump : WalkLeftAndRight
 {
+    [SerializeField]
+    private float playerJump = 1500.0f;
 
-    private float playerJump = 1000.0f;
+    [SerializeField]
+    private CreatePlatforms createPlatforms;
+
+    [SerializeField]
+    private Score score;
+
+    [SerializeField]
+    private float currentScore = 0.0f;
+
+    [SerializeField]
+    private int doubleJumpIter = 0;
 
     private const float RAYLENGHT = 2.0f;
+
+    void Start()
+    {
+        score = GameObject.Find("GUI").GetComponent<Score>();
+        createPlatforms = GameObject.Find("Platforms").GetComponent<CreatePlatforms>();
+    }
 
     void Update()
     {
@@ -18,6 +36,14 @@ public class Jump : KeyInput
     {
         if(GetJumpValue() && IsOnGrounded(ref playerBody))
         {
+            if (playerSpeed >= 9.0f)
+            {
+                playerJump = 1500.0f;
+                doubleJumpIter++;
+            }
+            else
+                playerJump = 1000.0f;
+
             playerBody.AddForce(Vector3.up * playerJump * Time.deltaTime,ForceMode.Impulse);
         }
     }

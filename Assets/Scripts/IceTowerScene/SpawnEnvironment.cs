@@ -30,9 +30,12 @@ public class SpawnEnvironment : MonoBehaviour {
     {
         environment = new List<GameObject>();
 
-        SpawnBackAndWalls(leftWall, wallsGap);
-        SpawnBackAndWalls(rightWall, wallsGap);
-        SpawnBackAndWalls(backGround, backGroundgap);
+        for (int i = 0; i < 18; i++)
+        {
+            SpawnBackAndWalls(leftWall, wallsGap);
+            SpawnBackAndWalls(rightWall, wallsGap);
+            SpawnBackAndWalls(backGround, backGroundgap);
+        }
     }
 
     private void SpawnBackAndWalls(GameObject obj,float gap)
@@ -60,10 +63,8 @@ public class SpawnEnvironment : MonoBehaviour {
         SpawnBackAndWalls(leftWall, wallsGap);
         SpawnBackAndWalls(rightWall, wallsGap);
         SpawnBackAndWalls(backGround, backGroundgap);
-        wallsGap += 10.0f;
-        backGroundgap += 10.0f;
-
-
+        wallsGap += 15.0f;
+        backGroundgap += 15.0f;
     }
 
 }

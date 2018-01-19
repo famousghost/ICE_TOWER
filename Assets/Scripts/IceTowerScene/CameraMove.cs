@@ -20,16 +20,16 @@ public class CameraMove : GameOver {
     private float cameraPositionToSpawnEnvironment = 12.0f;
 
     [SerializeField]
-    private SpawnEnvironment spawnEnvironment;
-
-    [SerializeField]
-    private CreatePlatforms spawnPlatforms;
-
-    [SerializeField]
     private bool timerStop = false;
 
     [SerializeField]
     private const float CAMERAPOSTOTOPSCREEN = 7.0f;
+
+    [SerializeField]
+    private float spawnPlatformTime = 4.0f;
+
+    [SerializeField]
+    private float spawnWallsTime = 10.0f;
 
     [SerializeField]
     private const float TIMER = 0.4f;
@@ -48,9 +48,6 @@ public class CameraMove : GameOver {
         ResumeGame();
         playerBody = GameObject.Find("Player").GetComponent<Rigidbody>();
         GUICanvas = GameObject.Find("GUI").GetComponentInChildren<Canvas>();
-        spawnEnvironment = GameObject.FindGameObjectWithTag("Environment").GetComponent<SpawnEnvironment>();
-        spawnPlatforms = GameObject.FindGameObjectWithTag("Platforms").GetComponent<CreatePlatforms>();
-
         mainCamera = GetComponent<Camera>();
 	}
 	
@@ -67,7 +64,8 @@ public class CameraMove : GameOver {
             timerToUpSpeed = 10.0f;
             if (cameraSpeed < 10.0f)
             {
-                cameraSpeed *= 2f;
+                spawnWallsTime -= 0.5f;
+                cameraSpeed += 2.5f;
                 
             }
             else
@@ -85,25 +83,11 @@ public class CameraMove : GameOver {
             float mainCameraHeight = playerBody.transform.position.y;
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position,new Vector3(0.0f, mainCameraHeight, -10.0f),lerpTime * Time.deltaTime);
         }
-        CheckCameraPosition();
         if(!timerStop)
             timerToUpSpeed = timerToUpSpeed - TIMER * Time.deltaTime;
 
     }
 
-    private void CheckCameraPosition()
-    {
-        if(mainCamera.transform.localPosition.y > cameraPosition)
-        {
-            cameraPosition = (mainCamera.transform.localPosition.y + 4.0f);
-            spawnPlatforms.SpwanPlatform();     
-        }  
-        if(mainCamera.transform.localPosition.y > cameraPositionToSpawnEnvironment)
-        {
-            cameraPositionToSpawnEnvironment = (mainCamera.transform.localPosition.y + 10.0f);
-            spawnEnvironment.SpawEnvi();
-        }
-    }
 
     private void CheckGameOver()
     {

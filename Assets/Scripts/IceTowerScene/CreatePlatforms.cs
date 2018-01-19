@@ -31,7 +31,7 @@ public class CreatePlatforms : MonoBehaviour {
     private float platformPosition;
 
     [SerializeField]
-    private int platformIter = 1;
+    private int platformStateIter = 1;
 
     [SerializeField]
     private int height = 1;
@@ -55,9 +55,12 @@ public class CreatePlatforms : MonoBehaviour {
         spwanPlatform.transform.parent = transform;
         spwanPlatform.transform.position = new Vector3(platfromPosition, platformHeight, 6.0f);
         spwanPlatform.transform.localScale = new Vector3(platformWidth,1.0f,3.0f);
-        if(platformIter%20==0)
+        if(platformStateIter%20==0)
         {
-            platformsState++;
+            if (platformsState != PlatformsState.Ice)
+                platformsState++;
+            else
+                platformsState = PlatformsState.Normal;
         }
 
         switch (platformsState)
@@ -85,8 +88,7 @@ public class CreatePlatforms : MonoBehaviour {
             platforms.Add(spwanPlatform);
         }
 
-
-        platformIter++;
+        platformStateIter++;
         height++;
     }
 
