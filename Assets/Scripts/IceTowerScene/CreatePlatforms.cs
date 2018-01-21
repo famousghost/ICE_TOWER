@@ -17,9 +17,19 @@ public class CreatePlatforms : Spawn
     [SerializeField]
     private float platformHeight;
 
-
     [SerializeField]
     private float platformWidth;
+
+    [SerializeField]
+    private float platformMaxWidth = 10.0f;
+
+    private const float MINPLATFORMWIDTH = 5.0f;
+
+    private const float MINPLATFORMPOSITION = -14.0f;
+
+    private const float MAXPLATFORMPOSITION = 14.0f;
+
+    private const float PLATFORMGAP = 4.0f;
 
     [SerializeField]
     private float platformPosition;
@@ -51,6 +61,8 @@ public class CreatePlatforms : Spawn
         spwanPlatform.transform.localScale = new Vector3(platformWidth,1.0f,3.0f);
         if(platformStateIter%20==0)
         {
+            if (platformMaxWidth > 7.0f)
+                platformMaxWidth -= 0.5f;
             if (platformsState != PlatformsState.Ice)
                 platformsState++;
             else
@@ -89,11 +101,11 @@ public class CreatePlatforms : Spawn
     public void SpawnObject()
     {
 
-         platformPosition = Random.Range(14.0f, -14.0f);
-         platformWidth = Random.Range(5.0f, 10.0f);
-         platformHeight = 4.0f * height;
-
+         platformPosition = Random.Range(MINPLATFORMPOSITION, MAXPLATFORMPOSITION);
+         platformWidth = Random.Range(MINPLATFORMWIDTH, platformMaxWidth);
+         platformHeight = PLATFORMGAP * height;
          AddToObjectList(platformWidth, platformPosition, platformHeight);
+
     }
 
     private void DestroyPlatform()

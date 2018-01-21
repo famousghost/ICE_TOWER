@@ -25,7 +25,7 @@ public class Score : MonoBehaviour {
     {
         this.score += (score*multi);
         platformsCounter += 1;
-        if (currentPlatform < 2)
+        if (currentPlatform < 7)
             currentPlatform++;
         else
             currentPlatform = 0;
@@ -49,6 +49,11 @@ public class Score : MonoBehaviour {
     public void SetMultiplyPoints(int multiplyPoints)
     {
         this.multiplyPoints = multiplyPoints;
+    }
+
+    public int GetMultiply()
+    {
+        return multiplyPoints;
     }
 
 }

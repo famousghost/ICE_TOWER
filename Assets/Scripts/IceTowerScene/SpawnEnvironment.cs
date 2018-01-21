@@ -5,13 +5,7 @@ using UnityEngine;
 public class SpawnEnvironment : Spawn {
 
     [SerializeField]
-    private GameObject leftWall;
-
-    [SerializeField]
-    private GameObject rightWall;
-
-    [SerializeField]
-    private GameObject backGround;
+    private GameObject enviObject;
 
     [SerializeField]
     private List<GameObject> environment;
@@ -20,21 +14,16 @@ public class SpawnEnvironment : Spawn {
     private float platformHeight = 0.35f;
 
     [SerializeField]
-    private float wallsGap = 15.00f;
-
-    [SerializeField]
-    private float backGroundgap = 15.00f;
+    private float objectGap = 15.00f;
 
     // Use this for initialization
     void Start()
     {
         environment = new List<GameObject>();
 
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 10; i++)
         {
-            AddToObjectList(leftWall, wallsGap);
-            AddToObjectList(rightWall, wallsGap);
-            AddToObjectList(backGround, backGroundgap);
+            SpawnObject();
         }
     }
 
@@ -45,26 +34,20 @@ public class SpawnEnvironment : Spawn {
          spwanObject.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + gap, obj.transform.position.z);
          spwanObject.transform.rotation = obj.transform.rotation;
          spwanObject.transform.localScale = obj.transform.localScale;
-        if(environment.Count<=36)
+        if(environment.Count<=20)
          environment.Add(spwanObject);
         else
         {
-            for (int i = 0; i < 3; i++)
-            {
-                Destroy(environment[i]);
-                environment.RemoveAt(i);
-            }
+           Destroy(environment[0]);
+           environment.RemoveAt(0);
            environment.Add(spwanObject);
         }
     }
 
     public void SpawnObject()
     {
-        AddToObjectList(leftWall, wallsGap);
-        AddToObjectList(rightWall, wallsGap);
-        AddToObjectList(backGround, backGroundgap);
-        wallsGap += 15.0f;
-        backGroundgap += 15.0f;
+        AddToObjectList(enviObject, objectGap);
+        objectGap += 30.0f;
     }
 
 }

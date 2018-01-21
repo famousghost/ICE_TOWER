@@ -81,7 +81,8 @@ public class Jump : KeyInput
     {
         if(doubleJumpIter > 1)
         {
-            score.AddMultiplyPoints(doubleJumpIter);
+            if(score.GetMultiply()<= 10)
+                score.AddMultiplyPoints(doubleJumpIter);
         }
     }
 
