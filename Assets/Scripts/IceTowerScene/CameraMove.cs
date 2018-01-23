@@ -8,16 +8,13 @@ public class CameraMove : GameOver {
     private Rigidbody playerBody;
 
     [SerializeField]
+    private string playerName;
+
+    [SerializeField]
     private Canvas GUICanvas;
 
     [SerializeField]
     private Camera mainCamera;
-
-    [SerializeField]
-    private float cameraPosition = 12.0f;
-
-    [SerializeField]
-    private float cameraPositionToSpawnEnvironment = 12.0f;
 
     [SerializeField]
     private bool timerStop = false;
@@ -26,10 +23,7 @@ public class CameraMove : GameOver {
     private const float CAMERAPOSTOTOPSCREEN = 7.0f;
 
     [SerializeField]
-    private float spawnPlatformTime = 4.0f;
-
-    [SerializeField]
-    private float spawnWallsTime = 10.0f;
+    private Score score;
 
     [SerializeField]
     private const float TIMER = 0.4f;
@@ -46,6 +40,7 @@ public class CameraMove : GameOver {
 	// Use this for initialization
 	void Start () {
         ResumeGame();
+        score = GameObject.Find("GUI").GetComponent<Score>();
         playerBody = GameObject.Find("Player").GetComponent<Rigidbody>();
         GUICanvas = GameObject.Find("GUI").GetComponentInChildren<Canvas>();
         mainCamera = GetComponent<Camera>();
@@ -53,7 +48,8 @@ public class CameraMove : GameOver {
 	
 	// Update is called once per frame
 	void Update () {
-        Move();
+        if(score.GetPlatformsCounter()>2)
+            Move();
         CheckGameOver();
     }
     
@@ -64,7 +60,6 @@ public class CameraMove : GameOver {
             timerToUpSpeed = 10.0f;
             if (cameraSpeed < 10.0f)
             {
-                spawnWallsTime -= 0.5f;
                 cameraSpeed += 2.5f;   
             }
             else
@@ -92,6 +87,8 @@ public class CameraMove : GameOver {
     {
         if(playerBody.transform.localPosition.y < mainCamera.transform.localPosition.y - 14.0f)
         {
+            score.SaveScore();
+            
             OverGame();
             GUICanvas.enabled = true;
         }

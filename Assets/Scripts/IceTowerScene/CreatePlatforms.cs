@@ -12,6 +12,9 @@ public class CreatePlatforms : Spawn
     private PlatformsState platformsState;
 
     [SerializeField]
+    private PhysicMaterial platformPhysicMaterial;
+
+    [SerializeField]
     private List<GameObject> platforms;
 
     [SerializeField]
@@ -23,7 +26,8 @@ public class CreatePlatforms : Spawn
     [SerializeField]
     private float platformMaxWidth = 10.0f;
 
-    private const float MINPLATFORMWIDTH = 5.0f;
+    [SerializeField]
+    private float platformMinWidth = 7.0f;
 
     private const float MINPLATFORMPOSITION = -14.0f;
 
@@ -54,15 +58,38 @@ public class CreatePlatforms : Spawn
     private void AddToObjectList(float platformWidth,float platfromPosition,float platformHeight)
     {
 
+        GameObject spawnObject = GameObject.Instantiate(platform);
+        spawnObject.GetComponent<BoxCollider>().material = platformPhysicMaterial;
+        spawnObject.transform.parent = transform;
+        spawnObject.transform.position = new Vector3(platfromPosition, platformHeight, 6.0f);
+        spawnObject.transform.localScale = new Vector3(platformWidth,1.0f,3.0f);
 
-        GameObject spwanPlatform = GameObject.Instantiate(platform);
-        spwanPlatform.transform.parent = transform;
-        spwanPlatform.transform.position = new Vector3(platfromPosition, platformHeight, 6.0f);
-        spwanPlatform.transform.localScale = new Vector3(platformWidth,1.0f,3.0f);
+
+
+        switch(platformsState)
+        {
+            case PlatformsState.Normal:
+                spawnObject.gameObject.tag = "Normal";
+                spawnObject.GetComponent<BoxCollider>().material.staticFriction = 1.0f;
+                spawnObject.GetComponent<BoxCollider>().material.dynamicFriction = 1.0f;
+                break;
+            case PlatformsState.Ice:
+                spawnObject.gameObject.tag = "Ice";
+                spawnObject.GetComponent<BoxCollider>().material.staticFriction = 0.0f;
+                spawnObject.GetComponent<BoxCollider>().material.dynamicFriction = 0.0f;
+                break;
+            case PlatformsState.Sand:
+                spawnObject.gameObject.tag = "Sand";
+                break;
+        }
+
+
         if(platformStateIter%20==0)
         {
             if (platformMaxWidth > 7.0f)
                 platformMaxWidth -= 0.5f;
+            if (platformMinWidth > 3.5f)
+                platformMinWidth -= 0.3f;
             if (platformsState != PlatformsState.Ice)
                 platformsState++;
             else
@@ -72,13 +99,13 @@ public class CreatePlatforms : Spawn
         switch (platformsState)
         {
             case PlatformsState.Normal:
-                spwanPlatform.GetComponent<Renderer>().material.color = Color.grey;
+                spawnObject.GetComponent<Renderer>().material.color = Color.grey;
                 break;
             case PlatformsState.Ice:
-                spwanPlatform.GetComponent<Renderer>().material.color = Color.blue;
+                spawnObject.GetComponent<Renderer>().material.color = Color.blue;
                 break;
             case PlatformsState.Sand:
-                spwanPlatform.GetComponent<Renderer>().material.color = Color.yellow;
+                spawnObject.GetComponent<Renderer>().material.color = Color.yellow;
                 break;
             default:
                 break;
@@ -86,12 +113,12 @@ public class CreatePlatforms : Spawn
 
         if (platforms.Count < 16)
         {
-            platforms.Add(spwanPlatform);
+            platforms.Add(spawnObject);
         }
         else
         {
             DestroyPlatform();
-            platforms.Add(spwanPlatform);
+            platforms.Add(spawnObject);
         }
 
         platformStateIter++;
@@ -102,7 +129,7 @@ public class CreatePlatforms : Spawn
     {
 
          platformPosition = Random.Range(MINPLATFORMPOSITION, MAXPLATFORMPOSITION);
-         platformWidth = Random.Range(MINPLATFORMWIDTH, platformMaxWidth);
+         platformWidth = Random.Range(platformMinWidth, platformMaxWidth);
          platformHeight = PLATFORMGAP * height;
          AddToObjectList(platformWidth, platformPosition, platformHeight);
 
@@ -112,6 +139,11 @@ public class CreatePlatforms : Spawn
     {
         Destroy(platforms[0]);
         platforms.RemoveAt(0);
+    }
+
+    public PlatformsState GetPlatformState()
+    {
+        return platformsState;
     }
 
 }

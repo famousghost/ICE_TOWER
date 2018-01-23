@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuGUI : MonoBehaviour {
@@ -25,7 +26,7 @@ public class MenuGUI : MonoBehaviour {
 
     public void StartGame()
     {
-        Application.LoadLevel("IceTower");
+        SceneManager.LoadScene("IceTower");
     }
 
     public void Back()

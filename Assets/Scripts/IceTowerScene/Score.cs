@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Score : MonoBehaviour {
+public class Score : MonoBehaviour
+{
 
     [SerializeField]
     private int score = 0;
@@ -16,14 +17,9 @@ public class Score : MonoBehaviour {
     [SerializeField]
     private int platformsCounter = 0;
 
-    public void AddScore(int score)
+    public void AddScore(int score, int multi)
     {
-
-    }
-
-    public void AddScore(int score,int multi)
-    {
-        this.score += (score*multi);
+        this.score += (score * multi);
         platformsCounter += 1;
         if (currentPlatform < 7)
             currentPlatform++;
@@ -35,6 +31,13 @@ public class Score : MonoBehaviour {
     {
         return score;
     }
+
+    public void SaveScore()
+    {
+        if(PlayerPrefs.GetInt("PlayerScore")<score)
+            PlayerPrefs.SetInt("PlayerScore", score);
+    }
+
 
     public int GetCurrentPlatform()
     {
@@ -54,6 +57,11 @@ public class Score : MonoBehaviour {
     public int GetMultiply()
     {
         return multiplyPoints;
+    }
+
+    public int GetPlatformsCounter()
+    {
+        return platformsCounter;
     }
 
 }

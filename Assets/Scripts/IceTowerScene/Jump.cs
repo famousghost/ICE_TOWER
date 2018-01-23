@@ -5,10 +5,14 @@ using UnityEngine;
 public class Jump : KeyInput
 {
     [SerializeField]
-    private float playerJump = 1000.0f;
+    private float playerJump;
 
     [SerializeField]
-    private CreatePlatforms createPlatforms;
+    private float timerToNextDoubleJump = 1.5f;
+
+    private const float MINHEIGHTVELOCITY = 1000f;
+
+    private const float MAXHEIGHTVELOCITY = 1200f;
 
     [SerializeField]
     private WalkLeftAndRight walkLeftAndRight;
@@ -23,32 +27,29 @@ public class Jump : KeyInput
 
     void Start()
     {
+        playerJump = MINHEIGHTVELOCITY;
         score = GameObject.Find("GUI").GetComponent<Score>();
         walkLeftAndRight = GetComponent<WalkLeftAndRight>();
-        createPlatforms = GameObject.Find("Platforms").GetComponent<CreatePlatforms>();
-    }
-
-    void Update()
-    {
-        InputKeys();
     }
 
     public void Jumping(ref Rigidbody playerBody)
     {
-        if(walkLeftAndRight.GetPlayerSpeed()<= 9.0f)
+        if(walkLeftAndRight.GetPlayerSpeed()<= 9.0f || timerToNextDoubleJump <=0.0f)
         {
-            playerJump = 1000.0f;
+            playerJump = MINHEIGHTVELOCITY;
             doubleJumpIter = 1;
             score.SetMultiplyPoints(1);
         }
 
-        if (GetJumpValue() && IsOnGrounded(ref playerBody) && playerBody.velocity.y == 0)
+        if (GetJumpValue() && IsOnGrounded(ref playerBody) && playerBody.velocity.y <= 0.0f && playerBody.velocity.y >= -1.0f)
         {
 
             if (walkLeftAndRight.GetPlayerSpeed() >= 9.0f)
             {
-                playerJump = 1500.0f;
-                doubleJumpIter++;
+                playerJump = MAXHEIGHTVELOCITY;
+                timerToNextDoubleJump = 1.5f;
+                if(doubleJumpIter <= 10)
+                    doubleJumpIter++;
             }
 
             playerBody.AddForce(Vector3.up * playerJump * Time.deltaTime,ForceMode.Impulse);
@@ -57,6 +58,8 @@ public class Jump : KeyInput
         {
             walkLeftAndRight.SetPlayerSpeed();
         }
+        if (timerToNextDoubleJump >= 0.0f)
+        timerToNextDoubleJump -= (0.3f * Time.deltaTime);
     }
 
     private bool IsOnGrounded(ref Rigidbody playerBody)
@@ -69,7 +72,7 @@ public class Jump : KeyInput
         
         if(Physics.Raycast(rayToDown, out hit,RAYLENGHT))
         {
-            if (hit.collider.tag == "canJump")
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("canJump"))
                 return true;
             else
                 return false;
@@ -81,8 +84,7 @@ public class Jump : KeyInput
     {
         if(doubleJumpIter > 1)
         {
-            if(score.GetMultiply()<= 10)
-                score.AddMultiplyPoints(doubleJumpIter);
+            score.AddMultiplyPoints(doubleJumpIter);
         }
     }
 

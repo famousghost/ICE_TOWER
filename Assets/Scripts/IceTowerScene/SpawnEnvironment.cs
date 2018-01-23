@@ -11,9 +11,6 @@ public class SpawnEnvironment : Spawn {
     private List<GameObject> environment;
 
     [SerializeField]
-    private float platformHeight = 0.35f;
-
-    [SerializeField]
     private float objectGap = 15.00f;
 
     // Use this for initialization

@@ -42,6 +42,7 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
 
     private void OnOffCollider()
     {
+
         if (playerBody.transform.position.y > this.transform.position.y + 1.0f)
         {
             if (!scoresAdded)
@@ -54,13 +55,13 @@ public class BlockIsTriggeredIsOff : MonoBehaviour {
                 }
             }
             platformCollider.isTrigger = false;
-            platformCollider.transform.gameObject.tag = "canJump";
+            platformCollider.transform.gameObject.layer = LayerMask.NameToLayer("canJump");
             scoresAdded = true;
         }
         else
         {
             platformCollider.isTrigger = true;
-            platformCollider.transform.gameObject.tag = "CantJump";
+            platformCollider.transform.gameObject.layer = LayerMask.NameToLayer("cantJump");
         }
 
     }

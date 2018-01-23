@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameGUI : MonoBehaviour {
 
@@ -30,11 +31,11 @@ public class GameGUI : MonoBehaviour {
 
     public void RestartGame()
     {
-        Application.LoadLevel("IceTower");
+        SceneManager.LoadScene("IceTower");
     }
 
     public void QuitToMainMenu()
     {
-        Application.LoadLevel("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 }
